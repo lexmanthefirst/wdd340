@@ -4,3 +4,256 @@
 *:after {
   box-sizing: border-box;
 }
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', serif;
+}
+body::before {
+  --size: 45px;
+  --line: color-mix(in lch, canvasText, transparent 85%);
+  content: '';
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: linear-gradient(
+        90deg,
+        var(--line) 1px,
+        transparent 1px var(--size)
+      )
+      50% 50% / var(--size) var(--size),
+    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+      var(--size) var(--size);
+  mask: linear-gradient(-20deg, transparent 50%, white);
+  top: 0;
+  transform-style: flat;
+  pointer-events: none;
+  z-index: -1;
+}
+#wrapper {
+  background: white;
+  padding: 20px;
+  max-width: 60rem;
+  border: 5px solid #000;
+  display: flex;
+  justify-self: center;
+  flex-direction: column;
+}
+header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  text-decoration: none;
+}
+span a {
+  font-size: 1.5rem;
+  font-weight: 500;
+  justify-self: start;
+  text-decoration: none;
+}
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: #000;
+}
+#tools {
+  justify-self: end;
+}
+#tools a {
+  text-decoration: none;
+  color: #000;
+}
+/* General styles for all screens */
+nav {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+}
+
+ul.menuLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  list-style: none;
+  color: #000;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  gap: 1rem;
+  background: #f2f2f2;
+}
+
+/* Menu open styles */
+nav.open {
+  max-height: 300px;
+}
+
+ul.menuLinks.open {
+  padding: 0.5rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.menu-bars {
+  z-index: 100;
+  display: inline;
+  cursor: pointer;
+  transform: rotate(180deg);
+  justify-self: end;
+}
+
+.bar1,
+.bar3 {
+  width: 20px;
+  height: 2px;
+  background-color: #000;
+  margin: 8px 0;
+  transition: 0.25s;
+}
+
+.bar2 {
+  width: 15px;
+  height: 3px;
+  background-color: #000;
+  margin: 8px 0;
+  transition: 0.25s;
+}
+/* .cta-btn {
+  background: #00aeef;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.cta picture {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+} */
+/* Rotate first bar */
+.change .bar1 {
+  filter: drop-shadow(0 0 0.75rem #0000);
+
+  transform: rotate(-45deg) translate(-7px, 8px);
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+  opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+  filter: drop-shadow(0 0 0.75rem #0000);
+
+  transform: rotate(45deg) translate(-6px, -8px);
+}
+/* 
+.cta {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 2rem;
+} */
+.hero {
+  text-align: center;
+  position: relative;
+}
+.hero h3 {
+  color: #00aeef;
+}
+.hero button {
+  background: #00aeef;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.hero img {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+}
+.hero ul li {
+  list-style: none;
+  line-height: 1.5;
+}
+.cta-section {
+  position: absolute;
+  left: 0;
+  background: hsl(0 0% 0% / 0.15);
+  padding: 1rem;
+  border-radius: 8px;
+}
+.delorean-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: center;
+  margin: 2rem;
+}
+.delorean-upgrade h2,
+.dmc-delorean h2 {
+  margin-bottom: 1rem;
+}
+.upgrade-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 1.5rem;
+}
+figure {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+figcaption a {
+  text-decoration: none;
+  color: #000;
+}
+.reviews {
+  line-height: 3;
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 2px solid #000;
+}
+@media only screen and (min-width: 38rem) {
+  .menu-bars {
+    display: none;
+  }
+  nav {
+    max-height: none;
+    overflow: visible;
+  }
+  ul.menuLinks {
+    flex-direction: row;
+    justify-content: space-evenly;
+    opacity: 1;
+    transform: none;
+    padding: 0.5rem;
+    background: #000;
+    color: #fff;
+  }
+  ul.menuLinks.open {
+    opacity: 1;
+    transform: none;
+  }
+}
