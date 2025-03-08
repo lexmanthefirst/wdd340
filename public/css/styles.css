@@ -26,10 +26,10 @@ body::before {
       50% 50% / var(--size) var(--size),
     linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
       var(--size) var(--size);
-  mask: linear-gradient(-20deg, transparent 50%, white);
+  /* mask: linear-gradient(-20deg, transparent 50%, white); */
   top: 0;
   transform-style: flat;
-  pointer-events: none;
+  /* pointer-events: none; */
   z-index: -1;
 }
 #wrapper {
@@ -158,13 +158,7 @@ ul.menuLinks.open {
 
   transform: rotate(45deg) translate(-6px, -8px);
 }
-/* 
-.cta {
-  display: flex;
-  flex-direction: column;
 
-  margin-bottom: 2rem;
-} */
 .hero {
   text-align: center;
   position: relative;
@@ -173,7 +167,7 @@ ul.menuLinks.open {
   color: #00aeef;
 }
 .hero button {
-  background: #00aeef;
+  background: #006c93;
   color: white;
   border: none;
   padding: 10px 15px;
