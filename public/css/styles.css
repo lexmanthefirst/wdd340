@@ -90,6 +90,10 @@ ul.menuLinks {
   gap: 1rem;
   background: #f2f2f2;
 }
+li a {
+  text-decoration: none;
+  color: #000;
+}
 
 /* Menu open styles */
 nav.open {
@@ -126,20 +130,6 @@ ul.menuLinks.open {
   margin: 8px 0;
   transition: 0.25s;
 }
-/* .cta-btn {
-  background: #00aeef;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-.cta picture {
-  width: 100%;
-  max-width: 600px;
-  margin-top: 20px;
-} */
 /* Rotate first bar */
 .change .bar1 {
   filter: drop-shadow(0 0 0.75rem #0000);
@@ -229,6 +219,33 @@ footer {
   padding-top: 10px;
   border-top: 2px solid #000;
 }
+#inv-display {
+  display: grid;
+  grid-template-columns: 1fr; /* One column on small screens */
+  grid-template-rows: auto; /* Adjust rows dynamically */
+  gap: 10px; /* Spacing between items */
+  width: 100%;
+  max-width: 800px; /* Adjust as needed */
+  margin: auto;
+  word-wrap: break-word;
+  font-family: 'Inter', serif;
+}
+#inv-display img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  object-fit: cover;
+  width: 15rem;
+  height: 10rem;
+}
+#inv-display li {
+  background: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  list-style: none;
+}
 @media only screen and (min-width: 38rem) {
   .menu-bars {
     display: none;
@@ -244,10 +261,19 @@ footer {
     transform: none;
     padding: 0.5rem;
     background: #000;
-    color: #fff;
   }
   ul.menuLinks.open {
     opacity: 1;
     transform: none;
+  }
+  ul.menuLinks li a {
+    color: #fff;
+  }
+  #inv-display {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(200px, 1fr)
+    ); /* Adjust column width */
+    grid-template-rows: repeat(2, auto); /* Two rows */
   }
 }
