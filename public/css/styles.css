@@ -221,11 +221,11 @@ footer {
 }
 #inv-display {
   display: grid;
-  grid-template-columns: 1fr; /* One column on small screens */
-  grid-template-rows: auto; /* Adjust rows dynamically */
-  gap: 10px; /* Spacing between items */
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  gap: 10px;
   width: 100%;
-  max-width: 800px; /* Adjust as needed */
+  max-width: 800px;
   margin: auto;
   word-wrap: break-word;
   font-family: 'Inter', serif;
@@ -266,8 +266,6 @@ footer {
 
 /* Image Styling */
 #singleVehicleWrapper img {
-  /* width: 100%;
-  height: auto; */
   border-radius: 8px;
 }
 
@@ -317,7 +315,7 @@ footer {
       auto-fill,
       minmax(200px, 1fr)
     ); /* Adjust column width */
-    grid-template-rows: repeat(2, auto); /* Two rows */
+    grid-template-rows: repeat(2, auto);
   }
 
   #singleVehicleWrapper {
