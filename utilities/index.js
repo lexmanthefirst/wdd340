@@ -22,7 +22,6 @@ Util.getNav = async function (req, res, next) {
   list += `</ul>`;
   return list;
 };
-module.exports = Util;
 
 Util.buildClassificationGrid = async function (data) {
   let grid = '';
@@ -63,6 +62,70 @@ Util.buildClassificationGrid = async function (data) {
 
   return grid;
 };
+
+// Util.buildSpecView = async function (data) {
+//   let product = '';
+//   if (data.length > 0) {
+//     data.forEach(vehicle => {
+//       product = `
+//         <div class="product-detail">
+//           <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
+//           <img src="${vehicle.inv_thumbnail}" alt="Image of ${
+//         vehicle.inv_make
+//       } ${vehicle.inv_model} on CSE Motors" />
+//           <p>Price: $${new Intl.NumberFormat('en-US').format(
+//             vehicle.inv_price
+//           )}</p>
+//           <p>Year: ${vehicle.inv_year}</p>
+//           <p>Color: ${vehicle.inv_color}</p>
+//           <p>Description: ${vehicle.inv_description}</p>
+//         </div>
+//       `;
+//     });
+//   } else {
+//     product = `<p class="notice">Sorry, no vehicle details could be found.</p>`;
+//   }
+
+//   return product;
+// };
+/* **************************************
+ * Build the single vehicle view HTML
+ * ************************************ */
+Util.buildVehicleGrid = async function (data) {
+  let grid = '';
+  if (data.length > 0) {
+    let vehicle = data[0];
+
+    grid = `
+      <div id="singleVehicleWrapper">
+     <picture>
+    <source media="(max-width: 400px)" srcset="${vehicle.inv_thumbnail}">
+    <source media="(max-width: 600px)" srcset="${vehicle.inv_thumbnail}">
+    <source media="(max-width: 1200px)" srcset="${vehicle.inv_image}">
+    <source media="(min-width: 1201px)" srcset="${vehicle.inv_image}">
+      <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_year} ${
+      vehicle.inv_make
+    } ${vehicle.inv_model}" loading="lazy">
+  </picture>
+        <ul id="singleVehicleDetails">
+          <li><h2>${vehicle.inv_make} ${vehicle.inv_model} Details</h2></li>
+          <li><strong>Price: </strong>$${new Intl.NumberFormat('en-US').format(
+            vehicle.inv_price
+          )}</li>
+          <li><strong>Description: </strong>${vehicle.inv_description}</li>
+          <li><strong>Miles: </strong>${new Intl.NumberFormat('en-US').format(
+            vehicle.inv_miles
+          )}</li>
+        </ul>
+      </div>
+    `;
+  } else {
+    grid = `<p class="notice">Sorry, no matching vehicle could be found.</p>`;
+  }
+  return grid;
+};
+
+module.exports = Util;
 
 /* ****************************************
  * Middleware For Handling Errors
