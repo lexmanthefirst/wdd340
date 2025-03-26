@@ -26,6 +26,8 @@ async function getInventoryByClassificationId(classification_id) {
     console.error('getclassificationsbyid error ' + error);
   }
 }
+
+/* *************************** GET A SINGLE VEHICLE BY INV_ID ************************** */
 async function getInventoryByInvId(inv_id) {
   try {
     const data = await pool.query(

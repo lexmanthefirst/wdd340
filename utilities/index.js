@@ -63,34 +63,6 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
-// Util.buildSpecView = async function (data) {
-//   let product = '';
-//   if (data.length > 0) {
-//     data.forEach(vehicle => {
-//       product = `
-//         <div class="product-detail">
-//           <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
-//           <img src="${vehicle.inv_thumbnail}" alt="Image of ${
-//         vehicle.inv_make
-//       } ${vehicle.inv_model} on CSE Motors" />
-//           <p>Price: $${new Intl.NumberFormat('en-US').format(
-//             vehicle.inv_price
-//           )}</p>
-//           <p>Year: ${vehicle.inv_year}</p>
-//           <p>Color: ${vehicle.inv_color}</p>
-//           <p>Description: ${vehicle.inv_description}</p>
-//         </div>
-//       `;
-//     });
-//   } else {
-//     product = `<p class="notice">Sorry, no vehicle details could be found.</p>`;
-//   }
-
-//   return product;
-// };
-/* **************************************
- * Build the single vehicle view HTML
- * ************************************ */
 Util.buildVehicleGrid = async function (data) {
   let grid = '';
   if (data.length > 0) {

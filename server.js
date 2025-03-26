@@ -13,7 +13,7 @@ const expressLayouts = require('express-ejs-layouts');
 const baseController = require('./controllers/baseController');
 const inventoryRoute = require('./routes/inventoryRoute');
 const utilities = require('./utilities/');
-
+const errorRoutes = require('./routes/errorRoute');
 /* ***********************
  * Routes
  *************************/
@@ -53,6 +53,10 @@ app.use(async (err, req, res, next) => {
     nav,
   });
 });
+
+// // Error Middleware
+app.use('/error', errorRoutes);
+
 /* ***********************
  * Local Server Information
  * Values from .env (environment) file
