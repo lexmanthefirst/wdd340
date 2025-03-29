@@ -1,21 +1,22 @@
 <section class="hero">
   <h1>Welcome to CSE Motors!</h1>
-  <div class="cta-section">
-    <h2 class="blue">DMC Delorean</h2>
-    <ul>
-      <li>3 Cup holders</li>
-      <li>Superman doors</li>
-      <li>Fuzzy dice!</li>
-    </ul>
-    <button>Own Today</button>
-  </div>
-  <picture>
-    <source media="(max-width: 400px)" srcset="images/vehicles/delorean-tn.jpg">
-    <source media="(max-width: 600px)" srcset="/images/vehicles/delorean-tn.jpg">
-    <source media="(max-width: 1200px)" srcset="/images/vehicles/delorean.jpg">
-    <source media="(min-width: 1201px)" srcset="/images/vehicles/delorean.jpg">
-    <img class="hero-image" src="/images/vehicles/delorean.jpg" alt="A picture of the Delorean car" loading="lazy">
-  </picture>
+  <%- messages() %>
+    <div class="cta-section">
+      <h2 class="blue">DMC Delorean</h2>
+      <ul>
+        <li>3 Cup holders</li>
+        <li>Superman doors</li>
+        <li>Fuzzy dice!</li>
+      </ul>
+      <button>Own Today</button>
+    </div>
+    <picture>
+      <source media="(max-width: 400px)" srcset="images/vehicles/delorean-tn.jpg">
+      <source media="(max-width: 600px)" srcset="/images/vehicles/delorean-tn.jpg">
+      <source media="(max-width: 1200px)" srcset="/images/vehicles/delorean.jpg">
+      <source media="(min-width: 1201px)" srcset="/images/vehicles/delorean.jpg">
+      <img class="hero-image" src="/images/vehicles/delorean.jpg" alt="A picture of the Delorean car" loading="lazy">
+    </picture>
 </section>
 <section class="delorean-wrapper">
   <div class="delorean-upgrade">
