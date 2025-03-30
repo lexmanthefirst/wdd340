@@ -23,9 +23,9 @@ const utilities = require('./utilities/');
 
 // Routes
 const staticRoutes = require('./routes/static');
-const inventoryRoutes = require('./routes/inventoryRoute');
-const accountRoutes = require('./routes/accountRoute');
-const intentionalErrorRoutes = require('./routes/intentionalErrorRoute');
+const inventoryRoute = require('./routes/inventoryRoute');
+const accountRoute = require('./routes/accountRoute');
+const intentionalErrorRoute = require('./routes/intentionalErrorRoute');
 
 // Controllers
 const baseController = require('./controllers/baseController');
@@ -70,9 +70,9 @@ app.use((req, res, next) => {
  *************************/
 app.use(staticRoutes);
 app.get('/', utilities.handleErrors(baseController.buildHome));
-app.use('/inv', inventoryRoutes);
-app.use('/account', accountRoutes);
-app.use('/error', intentionalErrorRoutes);
+app.use('/inv', inventoryRoute);
+app.use('/account', accountRoute);
+app.use('/error', intentionalErrorRoute);
 
 // 404 Not Found Middleware (must be last route)
 app.use((req, res, next) => {
