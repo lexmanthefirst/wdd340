@@ -3,18 +3,6 @@ const utilities = require('../utilities');
 const accountModel = require('../models/account-model');
 
 /* ****************************************
- *  Deliver login view
- * *************************************** */
-async function buildLogin(req, res, next) {
-  let nav = await utilities.getNav();
-  res.render('account/login', {
-    title: 'Login',
-    nav,
-    errors: null,
-  });
-}
-
-/* ****************************************
  *  Deliver registration view
  * *************************************** */
 async function buildRegister(req, res, next) {
@@ -27,7 +15,7 @@ async function buildRegister(req, res, next) {
 }
 
 /* ****************************************
- *  Handle registration
+ *  Process Registration
  * *************************************** */
 async function registerAccount(req, res) {
   let nav = await utilities.getNav();
@@ -54,6 +42,7 @@ async function registerAccount(req, res) {
       errors: null,
     });
   }
+
   const regResult = await accountModel.registerAccount(
     account_firstname,
     account_lastname,
@@ -64,18 +53,33 @@ async function registerAccount(req, res) {
   if (regResult) {
     req.flash(
       'notice',
-      `Congratulations, you\'re registered ${account_firstname}. Please log in.`
+      `Congratulations, you\'re registered as ${account_firstname}. Please log in.`
     );
     res.status(201).render('account/login', {
       title: 'Login',
+      errors: null,
       nav,
     });
   } else {
     req.flash('notice', 'Sorry, the registration failed.');
     res.status(501).render('account/register', {
       title: 'Registration',
+      errors: null,
       nav,
     });
   }
+}
+
+/* ****************************************
+ *  Deliver login view
+ * *************************************** */
+async function buildLogin(req, res, next) {
+  let nav = await utilities.getNav();
+  // req.flash("notice", "This is a flash message.!!!@2")
+  res.render('account/login', {
+    title: 'Login',
+    errors: null,
+    nav,
+  });
 }
 module.exports = { buildLogin, buildRegister, registerAccount };
