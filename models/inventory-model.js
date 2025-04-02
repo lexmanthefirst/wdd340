@@ -42,7 +42,10 @@ async function getInventoryByClassificationId(classification_id) {
 async function getInventoryByInvId(inv_id) {
   try {
     const data = await pool.query(
-      `SELECT * FROM public.inventory WHERE inv_id = $1`,
+      `SELECT * FROM public.inventory
+        INNER JOIN public.classification
+        ON public.inventory.classification_id = public.classification.classification_id
+        WHERE inv_id = $1`,
       [inv_id]
     );
     return data.rows;
@@ -78,7 +81,7 @@ async function addInventory(
       classification_id)
       VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10 )`;
   try {
-    return await pool.query(sql, [
+    const result = await pool.query(sql, [
       inv_make,
       inv_model,
       inv_year,
@@ -90,8 +93,10 @@ async function addInventory(
       inv_color,
       classification_id,
     ]);
+    return result.rowCount > 0; // Return true if inserted successfully
   } catch (error) {
     console.error('addInventory error. ' + error);
+    return false;
   }
 }
 

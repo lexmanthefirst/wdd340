@@ -1,4 +1,4 @@
-const utilities = require('.');
+const utilities = require('../utilities');
 const invModel = require('../models/inventory-model');
 const { body, validationResult } = require('express-validator');
 const validate = {};
@@ -18,15 +18,17 @@ validate.AddClassificationRules = () => {
 };
 
 //Check data amd return errors or proceed with add classification
-validate.checkAddClassificationData = async (req, res, next) => {
+
+validate.checkClassificationData = async (req, res, next) => {
   const { classification_name } = req.body;
   let errors = [];
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
     res.render('inventory/add-classification', {
+      // Try again
       errors,
-      title: 'Add New Classification',
+      title: 'Add Classification',
       nav,
       classification_name,
     });
@@ -35,49 +37,39 @@ validate.checkAddClassificationData = async (req, res, next) => {
   next();
 };
 
-validate.inventoryRules = async (req, res, next) => {
+validate.inventoryRules = () => {
   return [
-    //Inv_make is required and must be a string
+    // Make is required and must be string
     body('inv_make')
       .trim()
       .escape()
-      .isAlpha()
+      .notEmpty()
+      .withMessage('Make value is missing')
       .isLength({ min: 1 })
-      .withMessage('Please provide a make.'),
-    //inv_model is required and must be a string
+      .withMessage('Please provide a make.'), // on error this message is sent.
+
     body('inv_model')
       .trim()
       .escape()
-      .isAlpha()
+      .notEmpty()
       .isLength({ min: 1 })
       .withMessage('Please provide a model.'),
-    //inv_year is required and must be a number
+
     body('inv_year')
       .trim()
       .escape()
+      .notEmpty()
+      .withMessage('Year value missing.')
       .isNumeric()
-      .withMessage('Please provide a valid year.'),
-    //inv_color is required and must be a string
-    body('inv_color')
-      .trim()
-      .escape()
-      .isAlpha()
-      .isLength({ min: 1 })
-      .withMessage('Please provide a color.'),
-    //inv_miles is required and must be a number
-    body('inv_miles')
-      .trim()
-      .escape()
-      .isNumeric()
-      .withMessage('Price value is missing')
-      .withMessage('Please provide a number.'),
-    //inv_description is required and must be a string
+      .withMessage('Year must be a number.'),
+
     body('inv_description')
       .trim()
       .escape()
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage('Please provide a description.'),
+
     body('inv_image')
       .trim()
       .escape()
@@ -91,6 +83,7 @@ validate.inventoryRules = async (req, res, next) => {
       .notEmpty()
       .isLength({ min: 1 })
       .withMessage('Please provide a thumbnail.'),
+
     body('inv_price')
       .trim()
       .escape()
@@ -98,6 +91,22 @@ validate.inventoryRules = async (req, res, next) => {
       .withMessage('Price value is missing.')
       .isNumeric()
       .withMessage('Price must be a number.'),
+
+    body('inv_miles')
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage('Miles value is missing.')
+      .isNumeric()
+      .withMessage('Miles must be a number.'),
+
+    body('inv_color')
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .withMessage('Please provide a color.'),
+
     body('classification_id')
       .trim()
       .escape()
@@ -130,7 +139,7 @@ validate.checkInventoryData = async (req, res, next) => {
       classification_id
     );
     let nav = await utilities.getNav();
-    res.render('inventory/addInventory', {
+    res.render('inventory/add-inventory', {
       // Try again
       errors,
       title: 'Add Inventory',
@@ -150,3 +159,4 @@ validate.checkInventoryData = async (req, res, next) => {
   }
   next();
 };
+module.exports = validate;

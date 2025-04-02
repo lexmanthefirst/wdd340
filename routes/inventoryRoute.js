@@ -23,9 +23,9 @@ router.get(
 router.post(
   '/add-classification',
   invValidate.AddClassificationRules(),
-  invValidate.checkAddClassificationData,
+  invValidate.checkClassificationData,
   utilities.handleErrors(invController.addClassification)
-);
+); // ...through the appropriate router, where server-side validation middleware is present,...
 
 //Inventory management view
 router.get(
