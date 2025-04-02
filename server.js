@@ -95,7 +95,31 @@ app.use(async (err, req, res, next) => {
     nav,
   });
 });
+/* ***********************
+ * Global Error Handler
+//  *************************/
+// app.use(async (err, req, res, next) => {
+//   let nav = await utilities.getNav();
+//   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
 
+//   // Determine if it's a 404 or other error
+//   const status = err.status || 500;
+//   const message =
+//     status === 404
+//       ? err.message
+//       : 'Oh no! There was a server error. Please try again later.';
+
+//   // For 500 errors, include stack trace in development
+//   const errorDetails =
+//     status === 500 && process.env.NODE_ENV === 'development' ? err.stack : null;
+
+//   res.status(status).render('errors/error', {
+//     title: status === 404 ? 'Page Not Found' : 'Server Error',
+//     message,
+//     nav,
+//     error: errorDetails,
+//   });
+// });
 /* ***********************
  * Server Startup
  *************************/

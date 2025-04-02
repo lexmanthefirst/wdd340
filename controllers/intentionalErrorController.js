@@ -1,16 +1,19 @@
-/**
- * This controller exists to create an exception for testing
- */
 const intentionalErrorController = {};
 intentionalErrorController.causeError = async function (req, res, next) {
-  console.log('Causing an error...');
-  let aNumber = 1 / 0;
-  throw new Error('This is an intentional error.');
-  // The render templates expect data that is not being provided. This will also cause an exception.
-  res.render('./', {
-    title: 'Intentional Error',
-    errors: null,
-  });
+  try {
+    console.log('Causing an error...');
+    // Force a division by zero error
+    const aNumber = 1 / 0;
+    if (!isFinite(aNumber)) {
+      throw new Error('Division by zero error');
+    }
+    return res.render('/', {
+      title: 'Intentional Error',
+      errors: null,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = intentionalErrorController;
