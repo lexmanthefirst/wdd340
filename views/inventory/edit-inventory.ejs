@@ -43,3 +43,8 @@
                                         <%- classifications %><span class="fine-print">Required.</span>
                                 </label>
                                 <input type="submit" name="submit" value="Update Vehicle" disabled>
+                                <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>
+                                        "
+                                        <% } %>>
+                                                <script src="/js/inv-update.js"></script>
+                        </form>

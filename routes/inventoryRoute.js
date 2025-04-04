@@ -41,7 +41,7 @@ router.post(
 
 // Build edit/update inventory views
 router.get(
-  '/edit/:inventoryId',
+  '/edit/:inv_id',
   utilities.handleErrors(invController.buildEditInventory)
 );
 //AJAX inventory api call to get inventory by classification_id

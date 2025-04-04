@@ -103,7 +103,6 @@ invCont.addClassification = async function (req, res, next) {
   }
 };
 
-//Add single invtory
 //Add single inventory
 invCont.addInventory = async function (req, res, next) {
   const nav = await utilities.getNav();
@@ -160,8 +159,6 @@ invCont.addInventory = async function (req, res, next) {
 
 //Build the edit inventory view
 invCont.buildEditInventory = async function (req, res, next) {
-  const inv_id = parseInt(req.params.inventoryId);
-  const data = await invModel.getInventoryByInvId(inv_id);
   const classifications = await utilities.buildClassificationList();
   const nav = await utilities.getNav();
   res.render('inventory/edit-inventory', {
@@ -169,7 +166,6 @@ invCont.buildEditInventory = async function (req, res, next) {
     errors: null,
     nav,
     classifications,
-    data,
   });
 };
 /* ***************************
@@ -187,64 +183,38 @@ invCont.getInventoryJSON = async (req, res, next) => {
   }
 };
 
-// //Build the edit inventory view
-// invCont.buildAddInventory = async function (req, res, next) {
-//   const inv_id = parseInt(req.params.inventoryId);
-//   const nav = await utilities.getNav();
-
-//   const inventoryData = (await invModel.getInventoryByInvId(inv_id))[0];
-//   const name = `${inventoryData.inv_make} ${inventoryData.inv_model}`;
-
-//   let classifications = await utilities.buildClassificationList(
-//     inventoryData.classification_id
-//   );
-
-//   res.render('inventory/edit-inventory', {
-//     title: 'Edit ' + name,
-//     errors: null,
-//     nav,
-//     classifications,
-//     inv_id: inventoryData.inv_id,
-//     inv_make: inventoryData.inv_make,
-//     inv_model: inventoryData.inv_model,
-//     inv_year: inventoryData.inv_year,
-//     inv_description: inventoryData.inv_description,
-//     inv_image: inventoryData.inv_image,
-//     inv_thumbnail: inventoryData.inv_thumbnail,
-//     inv_price: inventoryData.inv_price,
-//     inv_miles: inventoryData.inv_miles,
-//     inv_color: inventoryData.inv_color,
-//     classification_id: inventoryData.classification_id,
-//   });
-// };
-
-/* ***************************
- *  Build edit inventory view
- * ************************** */
-invCont.editInventoryView = async function (req, res, next) {
+// Build the edit inventory view with data
+invCont.buildEditInventory = async function (req, res, next) {
   const inv_id = parseInt(req.params.inv_id);
-  let nav = await utilities.getNav();
-  const itemData = await invModel.getInventoryByInvId(inv_id);
-  const classificationSelect = await utilities.buildClassificationList(
-    itemData.classification_id
-  );
-  const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
-  res.render('./inventory/edit-inventory', {
-    title: 'Edit ' + itemName,
-    nav,
-    classificationSelect: classificationSelect,
-    errors: null,
-    inv_id: itemData.inv_id,
-    inv_make: itemData.inv_make,
-    inv_model: itemData.inv_model,
-    inv_year: itemData.inv_year,
-    inv_description: itemData.inv_description,
-    inv_image: itemData.inv_image,
-    inv_thumbnail: itemData.inv_thumbnail,
-    inv_price: itemData.inv_price,
-    inv_miles: itemData.inv_miles,
-    inv_color: itemData.inv_color,
-    classification_id: itemData.classification_id,
-  });
+  const nav = await utilities.getNav();
+  try {
+    const inventoryData = (await invModel.getInventoryByInvId(inv_id))[0];
+    const name = `${inventoryData.inv_make} ${inventoryData.inv_model}`;
+    let classifications = await utilities.buildClassificationList(
+      inventoryData.classification_id
+    );
+
+    res.render('inventory/edit-inventory', {
+      title: 'Edit ' + name,
+      errors: null,
+      nav,
+      classifications,
+      inv_id: inventoryData.inv_id,
+      inv_make: inventoryData.inv_make,
+      inv_model: inventoryData.inv_model,
+      inv_year: inventoryData.inv_year,
+      inv_description: inventoryData.inv_description,
+      inv_image: inventoryData.inv_image,
+      inv_thumbnail: inventoryData.inv_thumbnail,
+      inv_price: inventoryData.inv_price,
+      inv_miles: inventoryData.inv_miles,
+      inv_color: inventoryData.inv_color,
+      classification_id: inventoryData.classification_id,
+    });
+  } catch (error) {
+    req.flash('notice', 'Vehicle not found.');
+    res.redirect('/inv/');
+  }
 };
+
 module.exports = invCont;
