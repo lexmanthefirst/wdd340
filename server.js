@@ -20,6 +20,7 @@ const expressMessages = require('express-messages');
 const pgSession = require('connect-pg-simple')(session);
 const pool = require('./database/');
 const utilities = require('./utilities/');
+const cookieParser = require('cookie-parser');
 
 // Routes
 const staticRoutes = require('./routes/static');
@@ -43,7 +44,8 @@ app.set('layout', './layouts/layout');
  *************************/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // Handle form submissions
-
+app.use(cookieParser()); // Handle cookies
+app.use(utilities.checkJWTToken);
 // Session Middleware
 app.use(
   session({

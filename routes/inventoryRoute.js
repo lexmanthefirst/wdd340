@@ -38,4 +38,16 @@ router.post(
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.addInventory)
 );
+
+// Build edit/update inventory views
+router.get(
+  '/edit/:inventoryId',
+  utilities.handleErrors(invController.buildEditInventory)
+);
+//AJAX inventory api call to get inventory by classification_id
+// This route is used to fetch the inventory data for a specific classification_id
+router.get(
+  '/getInventory/:classification_id',
+  utilities.handleErrors(invController.getInventoryJSON)
+);
 module.exports = router;
