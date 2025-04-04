@@ -50,4 +50,11 @@ router.get(
   '/getInventory/:classification_id',
   utilities.handleErrors(invController.getInventoryJSON)
 );
+
+router.post(
+  '/update',
+  invValidate.updateInventoryRules(),
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateInventory)
+);
 module.exports = router;
