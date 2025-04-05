@@ -278,4 +278,48 @@ invCont.buildEditInventory = async function (req, res, next) {
   }
 };
 
+//Delete inventory View
+invCont.buildDeleteInventory = async function (req, res, next) {
+  const inventory_id = parseInt(req.params.inv_id);
+  const nav = await utilities.getNav();
+  const invData = (await invModel.getInventoryByInvId(inventory_id))[0];
+  const name = `${invData.inv_make} ${invData.inv_model}`;
+
+  res.render('inventory/delete-inventory', {
+    title: 'Delete ' + name,
+    errors: null,
+    nav,
+    inv_id: invData.inv_id,
+    inv_make: invData.inv_make,
+    inv_model: invData.inv_model,
+    inv_year: invData.inv_year,
+    inv_price: invData.inv_price,
+  });
+};
+
+// Delete inventory
+invCont.deleteInventory = async (req, res, next) => {
+  const nav = await utilities.getNav();
+  const inventory_id = parseInt(req.params.inv_id);
+  const { inv_id, inv_make, inv_model, inv_year, inv_price } = req.body;
+
+  const deleteResult = await invModel.deleteInventory(inventory_id);
+  const itemName = `${inv_make} ${inv_model}`;
+  if (deleteResult) {
+    req.flash('notice', `The ${itemName} was successfully deleted.`);
+    res.redirect('/inv/');
+  } else {
+    req.flash('notice', `Failed to delete ${itemName}`);
+    res.status(501).render('inventory/delete-inventory', {
+      title: 'Delete ' + itemName,
+      errors: null,
+      nav,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_price,
+    });
+  }
+};
 module.exports = invCont;
