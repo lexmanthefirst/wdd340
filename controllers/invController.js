@@ -300,10 +300,9 @@ invCont.buildDeleteInventory = async function (req, res, next) {
 // Delete inventory
 invCont.deleteInventory = async (req, res, next) => {
   const nav = await utilities.getNav();
-  const inventory_id = parseInt(req.params.inv_id);
   const { inv_id, inv_make, inv_model, inv_year, inv_price } = req.body;
 
-  const deleteResult = await invModel.deleteInventory(inventory_id);
+  const deleteResult = await invModel.deleteInventory(inv_id);
   const itemName = `${inv_make} ${inv_model}`;
   if (deleteResult) {
     req.flash('notice', `The ${itemName} was successfully deleted.`);
