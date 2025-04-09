@@ -205,6 +205,47 @@ async function updateAccount(req, res) {
     });
   }
 }
+//Process account update password
+async function updatePassword(req, res) {
+  let nav = await utilities.getNav();
+  const { account_id, account_password } = req.body;
+  // Hash the password before storing
+  let hashedPassword;
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10);
+  } catch (error) {
+    req.flash(
+      'notice',
+      'Sorry, there was an error processing the password update.'
+    );
+    res.status(500).render('account/account-update', {
+      title: 'Account Update',
+      nav,
+      errors: null,
+    });
+  }
+  const updateResult = await accountModel.updatePassword(
+    account_id,
+    hashedPassword
+  );
+  if (updateResult) {
+    req.flash('notice', 'Successfully updated your password!');
+    res.status(201).render('account/account-management', {
+      title: 'Account Management',
+      errors: null,
+      nav,
+    });
+  } else {
+    req.flash('notice', 'Sorry, the password update failed. Please try again.');
+    res.status(501).render('account/account-update', {
+      title: 'Account Update',
+      errors: null,
+      nav,
+    });
+  }
+}
+
 //Process Account logout
 async function accountLogout(req, res) {
   res.clearCookie('jwt');
@@ -223,4 +264,5 @@ module.exports = {
   buildAccountUpdate,
   accountLogout,
   updateAccount,
+  updatePassword,
 };

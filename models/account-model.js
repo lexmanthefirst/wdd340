@@ -81,10 +81,23 @@ async function updateAccount(
     return new Error('Account update failed');
   }
 }
+
+//update password
+async function updatePassword(account_id, hashed_password) {
+  try {
+    const sql =
+      'UPDATE account SET account_password = $1 WHERE account_id = $2';
+    const result = await pool.query(sql, [hashed_password, account_id]);
+    return result.rows[0];
+  } catch (error) {
+    return new Error('Password update failed');
+  }
+}
 module.exports = {
   registerAccount,
   checkExistingEmail,
   getAccountByEmail,
   updateAccount,
   getAccountById,
+  updatePassword,
 };

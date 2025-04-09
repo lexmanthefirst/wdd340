@@ -131,6 +131,41 @@ validate.checkUpdateData = async (req, res, next) => {
   next();
 };
 
+//Check password and return errors or continue to Update password
+validate.checkUpdatePasswordData = async (req, res, next) => {
+  const { account_password } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render('account/account-update/', {
+      errors,
+      title: 'Update',
+      nav,
+      account_password,
+    });
+    return;
+  }
+  next();
+};
+
+//Validate password rules
+validate.updatePasswordRules = () => {
+  return [
+    //Password is required and must be a strong password
+    body('account_password')
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage('Password does not meet requirements'),
+  ];
+};
 validate.loginRules = () => {
   return [
     //valid email is required and must not already exist in the database

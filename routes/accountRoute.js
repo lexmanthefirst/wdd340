@@ -53,5 +53,11 @@ router.post(
   regValidate.checkUpdateData,
   utilities.handleErrors(accountController.updateAccount)
 );
+router.post(
+  '/update-password',
+  regValidate.updatePasswordRules(),
+  regValidate.checkUpdatePasswordData,
+  utilities.handleErrors(accountController.updatePassword)
+);
 
 module.exports = router;
