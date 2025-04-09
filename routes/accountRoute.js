@@ -18,7 +18,7 @@ router.get('/login', utilities.handleErrors(accountController.buildLogin));
 
 /* Deliver Registration route*/
 router.get(
-  '/register',
+  '/registeration',
   utilities.handleErrors(accountController.buildRegister)
 );
 
@@ -36,4 +36,16 @@ router.post(
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 );
+
+router.get(
+  '/logout',
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.accountLogout)
+);
+//account update route
+router.get(
+  '/update/:accountId',
+  utilities.handleErrors(accountController.buildAccountUpdate)
+);
+
 module.exports = router;

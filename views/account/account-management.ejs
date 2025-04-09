@@ -9,6 +9,14 @@
                 <% }) %>
         </ul>
         <% } %>
-            <div class="account-management">
-                <p>You are logged in</p>
-            </div>
+            <% if(locals.accountData.account_type=='client' ){ %>
+                <h2>Welcome <%- locals.accountData.account_id %></h2>
+                <p><a href="/account/update/ <%- locals.accountData.account_id %>">Update account information</a></p>
+                <% } else if (locals.accountData.account_type=='Employee' || locals.accountData.account_type=='Admin' )
+                    { %>
+                    <h2>Welcome <%- locals.accountData.account_firstname %></h2>
+                    <p><a href="/account/update/ <%- locals.accountData.account_id %>">Update account information</a>
+                    </p>
+                    <h2>Inventory Management</h2>
+                    <p><a href="/inv/">Manage Inventory</a></p>
+                    <% } %>

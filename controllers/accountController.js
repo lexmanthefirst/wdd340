@@ -147,10 +147,38 @@ async function accountLogin(req, res) {
   }
 }
 
+//Build account update view
+async function buildAccountUpdate(req, res, next) {
+  let nav = await utilities.getNav();
+  const accountDetail = await accountModel.getAccountById(req.params.accountId);
+  const { account_id, account_firstname, account_lastname, account_email } =
+    accountDetail;
+  res.render('account/account-update', {
+    title: 'Account Update',
+    nav,
+    errors: null,
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  });
+}
+
+//Account logout
+async function accountLogout(req, res) {
+  res.clearCookie('jwt');
+  delete res.locals.accountData;
+  res.locals.loggedin = null;
+  req.flash('notice', 'You have been logged out.');
+  res.redirect('/account/login');
+  return;
+}
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   accountLogin,
   buildAccountManagementView,
+  buildAccountUpdate,
+  accountLogout,
 };
