@@ -164,7 +164,48 @@ async function buildAccountUpdate(req, res, next) {
   });
 }
 
-//Account logout
+//Build account update
+async function updateAccount(req, res) {
+  const nav = await utilities.getNav();
+
+  // 1. Get account data from form and user session
+  const { account_id, account_firstname, account_lastname, account_email } =
+    req.body;
+  // 2. Update database with new information
+  const updateResult = await accountModel.updateAccount(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email
+  );
+
+  if (updateResult) {
+    req.flash('notice', `Successfully updated ${account_firstname}'s account!`);
+
+    const accountData = await accountModel.getAccountById(account_id);
+    delete accountData.account_password; // Remove password from object
+    res.locals.accountData.account_firstname = accountData.account_firstname;
+    utilities.updateCookie(accountData, res);
+
+    res.status(201).render('account/account-management', {
+      title: 'Account Management',
+      errors: null,
+      nav,
+    });
+  } else {
+    req.flash('notice', 'Sorry, the account update failed. Please try again.');
+    res.status(501).render('account/account-update', {
+      title: 'Account Update',
+      errors: null,
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email,
+      nav,
+    });
+  }
+}
+//Process Account logout
 async function accountLogout(req, res) {
   res.clearCookie('jwt');
   delete res.locals.accountData;
@@ -181,4 +222,5 @@ module.exports = {
   buildAccountManagementView,
   buildAccountUpdate,
   accountLogout,
+  updateAccount,
 };

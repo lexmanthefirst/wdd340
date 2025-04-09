@@ -51,6 +51,43 @@ validate.registrationRules = () => {
       .withMessage('Password does not meet requirements'),
   ];
 };
+//Update Data Validation Rules
+validate.updateRules = () => {
+  return [
+    //First is required and must be a string
+    body('account_firstname')
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .withMessage('Please provide a first name.'),
+
+    //Last is required and must be a string
+    body('account_lastname')
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 2 })
+      .withMessage('Please provide a last name.'),
+
+    // valid email is required and cannot already exist in the database
+    body('account_email')
+      .trim()
+      .notEmpty()
+      .withMessage('Email address is required.')
+      .isEmail()
+      .withMessage('A valid email address is required.')
+      .custom(async (email, { req }) => {
+        if (email !== req.body.account_email_old) {
+          const existingEmail = await accountModel.getAccountByEmail(email);
+          if (existingEmail) {
+            throw new Error('Email already in use.');
+          }
+        }
+        return true;
+      }),
+  ];
+};
 /* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
@@ -63,6 +100,27 @@ validate.checkRegData = async (req, res, next) => {
     res.render('account/register', {
       errors,
       title: 'Registration',
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
+    });
+    return;
+  }
+  next();
+};
+/* ******************************
+ * Check data and return errors or continue to Update
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { account_firstname, account_lastname, account_email } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render('account/account-update/', {
+      errors,
+      title: 'Update',
       nav,
       account_firstname,
       account_lastname,
