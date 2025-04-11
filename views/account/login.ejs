@@ -12,11 +12,12 @@
                 <legend>Login Form</legend>
                 <label>Email<input type="email" name="account_email" required autocomplete="email"
                         value="<%= locals.account_email %>"></label>
-                <label>Password
-                    <input type="password" name="account_password" id="password" required
-                        autocomplete="current-password"
+                <label>
+                    Password
+                    <input type="password" name="account_password" id="password" required autocomplete="new-password"
                         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
                     <div class="eyeContainer">
+                        <!-- Add type="button" to prevent form submission -->
                         <button type="button" class="reveal-button" id="passwordHide">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -36,12 +37,11 @@
                         </button>
                     </div>
                 </label>
-                <input type="submit" value="Login to Account">
+                <input type="submit" value="Login To Account">
             </fieldset>
         </form>
-        <div>
-            <span>No account? <a href="/account/register">Sign up</a></span>
-        </div>
+        <!-- Script to handle hiding and revealing password field -->
+
         <script>
             const passwordInput = document.getElementById("password");
             const passwordHide = document.getElementById("passwordHide");
@@ -49,7 +49,7 @@
             const eyeClosed = document.querySelector(".eye-closed");
 
             passwordHide.addEventListener("click", (e) => {
-                preventDefault(e);
+                e.preventDefault(); // Extra safety (though type="button" already prevents submit)
                 if (passwordInput.type === "password") {
                     passwordInput.type = "text";
                     eyeOpen.style.display = "none";

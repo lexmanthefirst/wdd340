@@ -88,7 +88,7 @@ async function updatePassword(account_id, hashed_password) {
     const sql =
       'UPDATE account SET account_password = $1 WHERE account_id = $2';
     const result = await pool.query(sql, [hashed_password, account_id]);
-    return result.rows[0];
+    return result;
   } catch (error) {
     return new Error('Password update failed');
   }

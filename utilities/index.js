@@ -171,6 +171,35 @@ Util.updateCookie = (accountData, res) => {
   }
 };
 
+//Check authorization
+Util.checkAuthorization = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash('notice', 'Please log in');
+          res.clearCookie('jwt');
+          return res.redirect('/account/login');
+        }
+        if (
+          accountData.account_type == 'Employee' ||
+          accountData.account_type == 'Admin'
+        ) {
+          next();
+        } else {
+          req.flash('notice', 'You are not authorized to modify inventory');
+          return res.redirect('/account/login');
+        }
+      }
+    );
+  } else {
+    req.flash('notice', 'You are not authorized to modify inventory');
+    res.redirect('/account/login');
+  }
+};
 module.exports = Util;
 
 /* ****************************************

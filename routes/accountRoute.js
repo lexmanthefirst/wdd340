@@ -18,7 +18,7 @@ router.get('/login', utilities.handleErrors(accountController.buildLogin));
 
 /* Deliver Registration route*/
 router.get(
-  '/registeration',
+  '/register',
   utilities.handleErrors(accountController.buildRegister)
 );
 

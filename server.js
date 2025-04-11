@@ -21,6 +21,8 @@ const pgSession = require('connect-pg-simple')(session);
 const pool = require('./database/');
 const utilities = require('./utilities/');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 // Routes
 const staticRoutes = require('./routes/static');
@@ -35,6 +37,7 @@ const baseController = require('./controllers/baseController');
  * Express App Initialization
  *************************/
 const app = express();
+
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 app.set('layout', './layouts/layout');
@@ -43,10 +46,11 @@ app.set('layout', './layouts/layout');
  * Middleware
  *************************/
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // Handle form submissions
-app.use(cookieParser()); // Handle cookies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(utilities.checkJWTToken);
-// Session Middleware
+
+// Session Middleware with improved security
 app.use(
   session({
     store: new pgSession({
@@ -54,9 +58,14 @@ app.use(
       pool,
     }),
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     name: 'sessionId',
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
   })
 );
 
@@ -76,7 +85,7 @@ app.use('/inv', inventoryRoute);
 app.use('/account', accountRoute);
 app.use('/error', intentionalErrorRoute);
 
-// 404 Not Found Middleware (must be last route)
+// 404 Not Found Middleware
 app.use((req, res, next) => {
   next({ status: 404, message: 'Sorry, we appear to have lost that page.' });
 });
@@ -87,41 +96,26 @@ app.use((req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+
+  // Determine if it's a 404 or other error
+  const status = err.status || 500;
   const message =
-    err.status === 404
+    status === 404
       ? err.message
-      : 'Oh no! There was a crash. Maybe try a different route?';
-  res.status(err.status || 500).render('errors/error', {
-    title: err.status || 'Server Error',
+      : 'Oh no! There was a server error. Please try again later.';
+
+  // For 500 errors, include stack trace in development
+  const errorDetails =
+    status === 500 && process.env.NODE_ENV === 'development' ? err.stack : null;
+
+  res.status(status).render('errors/error', {
+    title: status === 404 ? 'Page Not Found' : 'Server Error',
     message,
     nav,
+    error: errorDetails,
   });
 });
-/* ***********************
- * Global Error Handler
-//  *************************/
-// app.use(async (err, req, res, next) => {
-//   let nav = await utilities.getNav();
-//   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
 
-//   // Determine if it's a 404 or other error
-//   const status = err.status || 500;
-//   const message =
-//     status === 404
-//       ? err.message
-//       : 'Oh no! There was a server error. Please try again later.';
-
-//   // For 500 errors, include stack trace in development
-//   const errorDetails =
-//     status === 500 && process.env.NODE_ENV === 'development' ? err.stack : null;
-
-//   res.status(status).render('errors/error', {
-//     title: status === 404 ? 'Page Not Found' : 'Server Error',
-//     message,
-//     nav,
-//     error: errorDetails,
-//   });
-// });
 /* ***********************
  * Server Startup
  *************************/
@@ -130,4 +124,5 @@ const host = process.env.HOST || 'localhost';
 
 app.listen(port, () => {
   console.log(`App listening on ${host}:${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
 });
