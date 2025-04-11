@@ -21,8 +21,6 @@ const pgSession = require('connect-pg-simple')(session);
 const pool = require('./database/');
 const utilities = require('./utilities/');
 const cookieParser = require('cookie-parser');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 
 // Routes
 const staticRoutes = require('./routes/static');
