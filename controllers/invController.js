@@ -79,13 +79,14 @@ invCont.buildAddInventory = async function (req, res, next) {
 invCont.addClassification = async function (req, res, next) {
   const { classification_name } = req.body;
 
-  const response = await invModel.addClassification(classification_name); // ...to a function within the inventory model...
-  let nav = await utilities.getNav(); // After query, so it shows new classification
+  const response = await invModel.addClassification(classification_name);
+  let nav = await utilities.getNav();
   if (response) {
     req.flash(
       'notice',
       `The "${classification_name}" classification was successfully added.`
     );
+
     res.render('inventory/management', {
       title: 'Vehicle Management',
       errors: null,

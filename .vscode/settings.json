@@ -11,6 +11,19 @@
       "driver": "PostgreSQL",
       "name": "cse340db",
       "connectString": "postgresql://cse340db:h6XBYK7RZDYgou4BXhw9Y0GKrLXPw07t@dpg-cv9ibtt2ng1s738avi70-a.oregon-postgres.render.com/cse340db_emli"
+    },
+    {
+      "pgOptions": {
+        "ssl": {
+          "rejectUnauthorized": true,
+          "passphrase": "LM1oWD72XTpIfoRQVY3wDozZHfJo5r6F"
+        }
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "cse-motors",
+      "connectString": "postgresql://cse340db:LM1oWD72XTpIfoRQVY3wDozZHfJo5r6F@dpg-cvsnptvdiees73fl1omg-a.oregon-postgres.render.com/cse340db_9ywi"
     }
   ]
 }

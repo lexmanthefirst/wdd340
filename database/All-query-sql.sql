@@ -239,3 +239,26 @@ VALUES   (
 	UPDATE public.inventory
 	SET inv_image = REPLACE(inv_image, '/images/vehicles', '/images/vehicles/'),
 		inv_thumbnail = REPLACE (inv_thumbnail, '/images/vehicle', '/images/vehicles/');
+
+
+-- Create reviews table
+CREATE TABLE IF NOT EXISTS public.reviews
+(
+    review_id SERIAL PRIMARY KEY,
+    inv_id INT NOT NULL,
+    account_id INT NOT NULL,
+    review_text TEXT NOT NULL,
+    review_rating INT NOT NULL CHECK (review_rating >= 1 AND review_rating <= 5),
+    review_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_inventory
+        FOREIGN KEY (inv_id)
+            REFERENCES inventory (inv_id)
+            ON DELETE CASCADE,
+    CONSTRAINT fk_account
+        FOREIGN KEY (account_id)
+            REFERENCES account (account_id)
+            ON DELETE CASCADE
+);
+
+-- Create index for faster review retrieval
+CREATE INDEX idx_reviews_inv_id ON public.reviews(inv_id);
