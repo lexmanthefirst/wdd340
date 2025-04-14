@@ -61,7 +61,15 @@ invCont.buildAddClassification = async function (req, res, next) {
     errors: null,
   });
 };
-
+//Build the delete classification view
+invCont.buildDeleteClassification = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  res.render('inventory/delete-classification', {
+    title: 'Delete Classification',
+    nav,
+    errors: null,
+  });
+};
 //Build add inventory view
 invCont.buildAddInventory = async function (req, res, next) {
   const nav = await utilities.getNav();
@@ -97,6 +105,35 @@ invCont.addClassification = async function (req, res, next) {
     req.flash('notice', `Failed to add ${classification_name}`);
     res.render('inventory/add-classification', {
       title: 'Add New Classification',
+      errors: null,
+      nav,
+      classification_name,
+    });
+  }
+};
+invCont.deleteClassification = async function (req, res, next) {
+  const { classification_name } = req.body;
+
+  const response = await invModel.deleteClassification(classification_name);
+  let nav = await utilities.getNav();
+  if (response) {
+    req.flash(
+      'notice',
+      `The "${classification_name}" classification was successfully deleted.`
+    );
+
+    const selectClassification = await utilities.buildClassificationList();
+    res.render('inventory/management', {
+      title: 'Vehicle Management',
+      errors: null,
+      nav,
+      selectClassification,
+      classification_name,
+    });
+  } else {
+    req.flash('notice', `Failed to delete ${classification_name}`);
+    res.render('inventory/delete-classification', {
+      title: 'Delete Classification',
       errors: null,
       nav,
       classification_name,

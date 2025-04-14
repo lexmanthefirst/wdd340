@@ -6,7 +6,20 @@ const validate = {};
 //Add classification Data validation Rules
 validate.AddClassificationRules = () => {
   return [
-    //Classification name is required and must be a strin
+    //Classification name is required and must be a string
+    body('classification_name')
+      .trim()
+      .escape()
+      .isAlphanumeric()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .withMessage('Please provide a classification name.'),
+  ];
+};
+//Add classification Data validation Rules
+validate.deleteClassificationRules = () => {
+  return [
+    //Classification name is required and must be a string
     body('classification_name')
       .trim()
       .escape()
@@ -29,6 +42,25 @@ validate.checkClassificationData = async (req, res, next) => {
       // Try again
       errors,
       title: 'Add Classification',
+      nav,
+      classification_name,
+    });
+    return;
+  }
+  next();
+};
+//Check data amd return errors or proceed with delete classification
+
+validate.checkDeleteClassificationData = async (req, res, next) => {
+  const { classification_name } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render('inventory/delete-classification', {
+      // Try again
+      errors,
+      title: 'Delete Classification',
       nav,
       classification_name,
     });

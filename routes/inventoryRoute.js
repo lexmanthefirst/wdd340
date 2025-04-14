@@ -80,4 +80,14 @@ router.get(
 );
 router.post('/delete/', utilities.handleErrors(invController.deleteInventory));
 
+//Delete classification router
+router.get(
+  '/delete-classification/',
+  utilities.handleErrors(invController.buildDeleteClassification)
+);
+router.post(
+  '/delete-classification/',
+  utilities.handleErrors(invController.deleteClassification)
+);
+
 module.exports = router;
