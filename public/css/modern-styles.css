@@ -14,9 +14,9 @@
   --border-radius: 8px;
   --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
-  --font-primary: 'Inter', sans-serif;
-  --font-secondary: 'Roboto', sans-serif;
-  --font-heading: 'Sansita', sans-serif;
+  --font-primary: 'Inter', serif;
+  --font-secondary: 'Roboto', serif;
+  --font-heading: 'Sansita', serif;
 }
 
 *,
@@ -97,7 +97,7 @@ nav {
   background-color: var(--primary-color);
   padding: 0.5rem 0;
   transition: var(--transition);
-  overflow: hidden;
+  /* overflow: hidden; */
   max-height: 0;
 }
 
@@ -485,30 +485,41 @@ select {
   width: 40rem;
 }
 .management-container {
-  padding: 1.5rem;
-}
-.management-container ul li {
-  list-style: none;
-  text-decoration: none;
-}
-.management-container ul li a {
-  color: var(--text-color);
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  display: block;
-  width: 100%;
-  text-align: left;
-  transition: var(--transition);
-}
-.management-container ul li a:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: var(--primary-color);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .management-container h1 {
-  font-family: var(--font-heading);
   color: var(--primary-color);
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+.management-container h2 {
+  color: var(--text-color);
+  margin: 2rem 0 1rem;
+}
+.management-container ul.no-bullet {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.management-container ul.no-bullet li a {
+  display: block;
+  padding: 1rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--border-radius);
   text-align: center;
+  transition: var(--transition);
+  font-weight: 500;
+}
+.management-container ul.no-bullet li a:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
 }
 /* Footer */
 footer {
@@ -581,6 +592,106 @@ footer a:hover {
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Inventory Table Styles */
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+#inventoryDisplay thead {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#inventoryDisplay th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+#inventoryDisplay td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#inventoryDisplay tr:last-child td {
+  border-bottom: none;
+}
+
+#inventoryDisplay tr:hover {
+  background-color: var(--background-light);
+}
+
+/* Modify and Delete Buttons */
+#inventoryDisplay td a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+  margin: 0 0.25rem;
+}
+
+#inventoryDisplay td a[title='Click to update'] {
+  background-color: var(--info-color);
+  color: white;
+}
+
+#inventoryDisplay td a[title='Click to delete'] {
+  background-color: var(--error-color);
+  color: white;
+}
+
+#inventoryDisplay td a:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
+}
+
+/* Delete Confirmation Form */
+.input-box input[type='submit'][value='Delete Vehicle'],
+.input-box input[type='submit'][value='DELETE'] {
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.input-box input[type='submit'][value='Delete Vehicle']:hover,
+.input-box input[type='submit'][value='DELETE']:hover {
+  background-color: var(--error-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
+}
+
+/* Form Submit Buttons */
+.input-box input[type='submit'] {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  margin-top: 1rem;
+}
+
+.input-box input[type='submit']:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
 }
 
 /* Responsive Design */

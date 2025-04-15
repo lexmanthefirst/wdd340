@@ -1,0 +1,51 @@
+<h1><%- title %></h1>
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <form class="input-box" action="/inv/review/update" method="post">
+                <input type="hidden" name="review_id" value="<%= review.review_id %>">
+
+                <h2>Edit Review for <%= review.inv_year %>
+                        <%= review.inv_make %>
+                            <%= review.inv_model %>
+                </h2>
+
+                <label>
+                    Rating
+                    <select name="review_rating" required>
+                        <option value="">Select a rating</option>
+                        <option value="1" <%=locals.review_rating==1 || review.review_rating==1 ? 'selected' : '' %>>1 -
+                            Poor</option>
+                        <option value="2" <%=locals.review_rating==2 || review.review_rating==2 ? 'selected' : '' %>>2 -
+                            Fair</option>
+                        <option value="3" <%=locals.review_rating==3 || review.review_rating==3 ? 'selected' : '' %>>3 -
+                            Good</option>
+                        <option value="4" <%=locals.review_rating==4 || review.review_rating==4 ? 'selected' : '' %>>4 -
+                            Very Good</option>
+                        <option value="5" <%=locals.review_rating==5 || review.review_rating==5 ? 'selected' : '' %>>5 -
+                            Excellent</option>
+                    </select>
+                </label>
+
+                <label>
+                    Your Review
+                    <textarea name="review_text" required minlength="10"
+                        maxlength="1000"><%= locals.review_text || review.review_text %></textarea>
+                </label>
+                <span class="fine-print">Review must be between 10 and 1000 characters.</span>
+
+                <input type="submit" value="Update Review">
+            </form>
+
+            <div class="delete-option">
+                <p>Want to delete this review instead? <a href="/inv/review/delete/<%= review.review_id %>"
+                        onclick="return confirm('Are you sure you want to delete this review?')">Delete Review</a></p>
+            </div>

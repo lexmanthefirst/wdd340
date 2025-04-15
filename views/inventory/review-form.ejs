@@ -1,0 +1,48 @@
+<h1><%- title %></h1>
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <% if (existingReview) { %>
+                <div class="notice">
+                    <p>You have already reviewed this vehicle. You can <a
+                            href="/inv/review/edit/<%= existingReview.review_id %>">edit your review</a> or <a
+                            href="/inv/detail/<%= inv_id %>">go back to the vehicle details</a>.</p>
+                </div>
+                <% } else { %>
+                    <form class="input-box" action="/inv/review" method="post">
+                        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+                        <input type="hidden" name="vehicleName" value="<%= vehicleName %>">
+
+                        <h2>Review for <%= vehicleName %>
+                        </h2>
+
+                        <label>
+                            Rating
+                            <select name="review_rating" required>
+                                <option value="">Select a rating</option>
+                                <option value="1" <%=locals.review_rating==1 ? 'selected' : '' %>>1 - Poor</option>
+                                <option value="2" <%=locals.review_rating==2 ? 'selected' : '' %>>2 - Fair</option>
+                                <option value="3" <%=locals.review_rating==3 ? 'selected' : '' %>>3 - Good</option>
+                                <option value="4" <%=locals.review_rating==4 ? 'selected' : '' %>>4 - Very Good</option>
+                                <option value="5" <%=locals.review_rating==5 ? 'selected' : '' %>>5 - Excellent</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Your Review
+                            <textarea name="review_text" required minlength="10"
+                                maxlength="1000"><%= locals.review_text %></textarea>
+                        </label>
+                        <span class="fine-print">Review must be between 10 and 1000 characters.</span>
+
+                        <input type="submit" value="Submit Review">
+                    </form>
+                    <% } %>

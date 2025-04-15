@@ -27,6 +27,7 @@ const staticRoutes = require('./routes/static');
 const inventoryRoute = require('./routes/inventoryRoute');
 const accountRoute = require('./routes/accountRoute');
 const intentionalErrorRoute = require('./routes/intentionalErrorRoute');
+const reviewRoute = require('./routes/reviewRoute');
 
 // Controllers
 const baseController = require('./controllers/baseController');
@@ -82,6 +83,7 @@ app.get('/', utilities.handleErrors(baseController.buildHome));
 app.use('/inv', inventoryRoute);
 app.use('/account', accountRoute);
 app.use('/error', intentionalErrorRoute);
+app.use('/inv', reviewRoute);
 
 // 404 Not Found Middleware
 app.use((req, res, next) => {

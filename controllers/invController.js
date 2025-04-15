@@ -1,5 +1,6 @@
 const invModel = require('../models/inventory-model');
 const utilities = require('../utilities/');
+const reviewModel = require('../models/review-model');
 
 const invCont = {};
 
@@ -30,12 +31,30 @@ invCont.buildByInventoryId = async function (req, res, next) {
   const vehicleMake = data[0].inv_make;
   const vehicleModel = data[0].inv_model;
   const vehicleYear = data[0].inv_year;
+
+  // Get reviews for this vehicle
+  const reviews = await reviewModel.getReviewsByInventoryId(inv_id);
+  const avgRating = await reviewModel.getAverageRatingByInventoryId(inv_id);
+
+  // Check if user is logged in and has already reviewed this vehicle
+  let existingReview = null;
+  if (res.locals.loggedin) {
+    existingReview = await reviewModel.checkExistingReview(
+      inv_id,
+      res.locals.accountData.account_id
+    );
+  }
+
   // view -- vehicle.ejs
   res.render('./inventory/vehicle', {
     title: vehicleYear + ' ' + vehicleMake + ' ' + vehicleModel,
     nav,
     grid,
     errors: null,
+    reviews,
+    avgRating,
+    existingReview,
+    inv_id,
   });
 };
 
